@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>URL-Shortner -Home</title>
+    <style>
+      td,
+      th {
+        border: 1px solid;
+        padding: 0.5vw;
+        text-align: center;
+        vertical-align: middle;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div>
+      <h1>URL-Shortner</h1>
+      <form action="/url" method="post">
+        <label for="url">Enter Original URL:</label>
+        <input
+          type="text"
+          name="url"
+          placeholder="https://www.example.com"
+          value="https://"
+          required
+        />
+        <button type="submit">Shorten</button>
+      </form>
+      <% if (locals.shortUrl) { %>
+      <p>
+        Shortened URL:
+        <a href="http://localhost:3000/url/<%= shortUrl %>">
+          <%= shortUrl %>
+        </a>
+      </p>
+      <button
+        onclick="copyToClipboard('http://localhost:3000/url/<%= shortUrl %>')"
+      >
+        Copy
+      </button>
+      <% } %>
+    </div>
+    <div>
+      <% if (locals.urls) { %>
+      <table>
+        <thead>
+          <tr>
+            <th>Sl No.</th>
+            <th>Original URL</th>
+            <th>Shortened URL</th>
+            <th></th>
+            <th>Clicks</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% urls.forEach((url,index)=> { %>
+          <tr>
+            <td><%= index+1 %></td>
+            <td><%= url.redirectURL %></td>
+            <td>
+              <a href="http://localhost:3000/url/<%= url.shortURL %>">
+                <%= url.shortURL %>
+              </a>
+            </td>
+            <td>
+              <button
+                onclick="copyToClipboard('http://localhost:3000/url/<%= url.shortURL %>')"
+              >
+                Copy
+              </button>
+            </td>
+            <td><%= url.history.length %></td>
+          </tr>
+          <% }); %>
+        </tbody>
+      </table>
+      <% } %>
+    </div>
+    <script>
+      function copyToClipboard(text) {
+        {
+          navigator.clipboard.writeText(text);
+        }
+      }
+    </script>
+  </body>
+</html>
